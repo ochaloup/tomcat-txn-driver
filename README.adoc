@@ -1,0 +1,89 @@
+It's a test for forum question at:
+https://developer.jboss.org/message/976811
+
+* `mvn clean install`
+* `CATALINA_HOME=...`
+* `cp target/*.jar $CATALINA_HOME/webapps/test.war`
+* `cd $CATALINA_HOME`
+* `./bin/startup.sh`
+* `tail -F logs/catalina.out`
+* `curl -i -X GET http://localhost:8080/test`
+
+```
+WARN: ARJUNA012125: TwoPhaseCoordinator.beforeCompletion - failed for SynchronizationImple< 0:ffff0a22ca2f:e226:59dcb6da:9, org.hibernate.resource.transaction.backend.jta.internal.synchronization.RegisteredSynchronization@1ccd3fe8 >
+javax.persistence.PersistenceException: org.hibernate.exception.GenericJDBCException: could not execute statement
+at org.hibernate.jpa.spi.AbstractEntityManagerImpl.convert(AbstractEntityManagerImpl.java:1692)
+at org.hibernate.jpa.spi.AbstractEntityManagerImpl.convert(AbstractEntityManagerImpl.java:1602)
+at org.hibernate.jpa.spi.AbstractEntityManagerImpl.convert(AbstractEntityManagerImpl.java:1608)
+at org.hibernate.jpa.internal.EntityManagerImpl$CallbackExceptionMapperImpl.mapManagedFlushFailure(EntityManagerImpl.java:235)
+at org.hibernate.internal.SessionImpl.flushBeforeTransactionCompletion(SessionImpl.java:3139)
+at org.hibernate.internal.SessionImpl.beforeTransactionCompletion(SessionImpl.java:2352)
+at org.hibernate.engine.jdbc.internal.JdbcCoordinatorImpl.beforeTransactionCompletion(JdbcCoordinatorImpl.java:491)
+at org.hibernate.resource.transaction.backend.jta.internal.JtaTransactionCoordinatorImpl.beforeCompletion(JtaTransactionCoordinatorImpl.java:316)
+at org.hibernate.resource.transaction.backend.jta.internal.synchronization.SynchronizationCallbackCoordinatorNonTrackingImpl.beforeCompletion(SynchronizationCallbackCoordinatorNonTrackingImpl.java:47)
+at org.hibernate.resource.transaction.backend.jta.internal.synchronization.RegisteredSynchronization.beforeCompletion(RegisteredSynchronization.java:37)
+at com.arjuna.ats.internal.jta.resources.arjunacore.SynchronizationImple.beforeCompletion(SynchronizationImple.java:76)
+at com.arjuna.ats.arjuna.coordinator.TwoPhaseCoordinator.beforeCompletion(TwoPhaseCoordinator.java:368)
+at com.arjuna.ats.arjuna.coordinator.TwoPhaseCoordinator.end(TwoPhaseCoordinator.java:91)
+at com.arjuna.ats.arjuna.AtomicAction.commit(AtomicAction.java:162)
+at com.arjuna.ats.internal.jta.transaction.arjunacore.TransactionImple.commitAndDisassociate(TransactionImple.java:1289)
+at com.arjuna.ats.internal.jta.transaction.arjunacore.BaseTransaction.commit(BaseTransaction.java:126)
+at MainServ.doGet(MainServ.java:62)
+at javax.servlet.http.HttpServlet.service(HttpServlet.java:622)
+at javax.servlet.http.HttpServlet.service(HttpServlet.java:729)
+at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:292)
+at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:207)
+at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52)
+at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:240)
+at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:207)
+at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:212)
+at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:94)
+at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:504)
+at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:141)
+at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:79)
+at org.apache.catalina.valves.AbstractAccessLogValve.invoke(AbstractAccessLogValve.java:620)
+at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:88)
+at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:502)
+at org.apache.coyote.http11.AbstractHttp11Processor.process(AbstractHttp11Processor.java:1132)
+at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:684)
+at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1539)
+at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.run(NioEndpoint.java:1495)
+at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+at java.lang.Thread.run(Unknown Source)
+Caused by: org.hibernate.exception.GenericJDBCException: could not execute statement
+at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:47)
+at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:111)
+at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:97)
+at org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:207)
+at org.hibernate.engine.jdbc.batch.internal.NonBatchingBatch.addToBatch(NonBatchingBatch.java:45)
+at org.hibernate.persister.entity.AbstractEntityPersister.insert(AbstractEntityPersister.java:2999)
+at org.hibernate.persister.entity.AbstractEntityPersister.insert(AbstractEntityPersister.java:3499)
+at org.hibernate.action.internal.EntityInsertAction.execute(EntityInsertAction.java:89)
+at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:586)
+at org.hibernate.engine.spi.ActionQueue.executeActions(ActionQueue.java:460)
+at org.hibernate.event.internal.AbstractFlushingEventListener.performExecutions(AbstractFlushingEventListener.java:337)
+at org.hibernate.event.internal.DefaultFlushEventListener.onFlush(DefaultFlushEventListener.java:39)
+at org.hibernate.internal.SessionImpl.flush(SessionImpl.java:1295)
+at org.hibernate.internal.SessionImpl.managedFlush(SessionImpl.java:468)
+at org.hibernate.internal.SessionImpl.flushBeforeTransactionCompletion(SessionImpl.java:3135)
+... 35 more
+Caused by: java.sql.SQLException: No database selected
+at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:1094)
+at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:4226)
+at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:4158)
+at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2615)
+at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2776)
+at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2840)
+at com.mysql.jdbc.PreparedStatement.executeInternal(PreparedStatement.java:2082)
+at com.mysql.jdbc.PreparedStatement.executeUpdate(PreparedStatement.java:2334)
+at com.mysql.jdbc.PreparedStatement.executeUpdate(PreparedStatement.java:2262)
+at com.mysql.jdbc.PreparedStatement.executeUpdate(PreparedStatement.java:2246)
+at com.mysql.jdbc.jdbc2.optional.PreparedStatementWrapper.executeUpdate(PreparedStatementWrapper.java:873)
+at org.apache.tomcat.dbcp.dbcp2.DelegatingPreparedStatement.executeUpdate(DelegatingPreparedStatement.java:97)
+at org.apache.tomcat.dbcp.dbcp2.DelegatingPreparedStatement.executeUpdate(DelegatingPreparedStatement.java:97)
+at org.hibernate.engine.jdbc.internal.ResultSetReturnImpl.executeUpdate(ResultSetReturnImpl.java:204)
+... 46 more
+```
+

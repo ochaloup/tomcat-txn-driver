@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+    <!-- Narayana resources -->
+    <Transaction factory="org.jboss.narayana.tomcat.io.narayana.jta.UserTransactionFactory"/>
+    <Resource name="TransactionManager" type="javax.transaction.TransactionManager"
+              factory="org.jboss.narayana.tomcat.jta.TransactionManagerFactory"/>
+    <Resource name="TransactionSynchronizationRegistry" type="javax.transaction.TransactionSynchronizationRegistry"
+              factory="org.jboss.narayana.tomcat.jta.TransactionSynchronizationRegistryFactory"/>
+              
+    <Resource name="tomcatTest" uniqueName="tomcatTest" auth="Container" type="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource"
+        driverClassName="com.mysql.jdbc.Driver"
+        factory="com.mysql.jdbc.jdbc2.optional.MysqlDataSourceFactory"
+        user="test" databaseName="test" password="test" url="jdbc:mysql://localhost:3306/test"
+        description="MySQL XA datasource by mysql jdbc factory" />
+     
+     <Resource name="transactionalDataSource" uniqueName="transactionalDataSource" auth="Container" type="javax.sql.DataSource"
+        driverClassName="com.arjuna.ats.jdbc.TransactionalDriver"
+        username="test" password="test" jdbc="jdbc:mysql://localhost:3306/test"
+        url="jdbc:arjuna:java:comp/env/tomcatTest"
+        description="Transactional Driver Data Source"/>
+              
+</Context>
